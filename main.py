@@ -1,7 +1,7 @@
 # Python script to find free slots to get a CoVID-19 vaccination in India
 # Based on the APIs available at https://apisetu.gov.in/public/marketplace/api/cowin
 # Author: Apurva Joshi
-# E-mail: firstname[dot]lastname[at]iitbombay.org
+# E-mail: firstname[dot]lastname[at]iitbombay[dot]org
 
 import requests
 import winsound
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         for week in range(0, no_of_weeks):
             hdl_request(TNA, week)
         
-        time.sleep(30)
+        time.sleep(20)
         
         print('***********************************************')
         print('Checking for free slots in Mumbai at', datetime.datetime.now())
@@ -88,4 +88,4 @@ if __name__ == "__main__":
         for week in range(0, no_of_weeks):
             hdl_request(MUM, week)
 
-        time.sleep(30)
+        time.sleep(20)

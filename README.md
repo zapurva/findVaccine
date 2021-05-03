@@ -10,3 +10,10 @@ Usage:
 ```
 $ python main.py
 ```
+
+#[TODO]
+
+* Check following references:
+    * [Exception Handling: blog post](https://findwork.dev/blog/advanced-usage-python-requests-timeouts-retries-hooks/)
+    * [Exception handling: documentation](https://docs.python-requests.org/en/latest/user/quickstart/#errors-and-exceptions)
+* Make alerts cross-platform
