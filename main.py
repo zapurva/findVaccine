@@ -4,7 +4,8 @@
 # E-mail: firstname[dot]lastname[at]iitbombay[dot]org
 
 import requests
-import winsound
+#import winsound
+import beepy
 import json
 import datetime
 import time
@@ -15,10 +16,10 @@ from requests.sessions import session
 TNA = '392'
 MUM = '395'
 
-def audio_alert():
-    frequency = 2500  # Set Frequency To 2500 Hertz
-    duration = 1000  # Set Duration To 1000 ms == 1 second
-    winsound.Beep(frequency, duration)
+#def audio_alert():
+#    frequency = 2500  # Set Frequency To 2500 Hertz
+#    duration = 1000  # Set Duration To 1000 ms == 1 second
+#    winsound.Beep(frequency, duration)
 
 def hdl_time(week_no):
     today = datetime.date.today()
@@ -68,7 +69,8 @@ def hdl_request(place, week_no):
         for i in ref_id_age:
             pincode = data["centers"][i]["pincode"]
             if pincode < 400800:
-                audio_alert()
+                #audio_alert()
+                beepy.beep(sound=6)
                 print(data["centers"][i])
 
 if __name__ == "__main__":
