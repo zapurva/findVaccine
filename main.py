@@ -31,7 +31,7 @@ def hdl_time(week_no):
 def hdl_request(place, week_no):
     preamble = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id='
     link = preamble + place + '&date=' + hdl_time(week_no)
-    response = requests.get(link)
+    response = requests.get(link, timeout = 1)
     #response = requests.get('https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=395&date=02-05-2021')
     print('-------------------------------------------')
     print('Checking for week starting: ', hdl_time(week_no))
@@ -74,7 +74,7 @@ def hdl_request(place, week_no):
                 print(data["centers"][i])
 
 if __name__ == "__main__":
-    no_of_weeks = 10 
+    no_of_weeks = 3 
     while True:
         print('***********************************************')
         print('Checking for free slots in Thane at', datetime.datetime.now())
