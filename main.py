@@ -36,7 +36,7 @@ def hdl_time(week_no):
     return chk_date
 
 def hdl_request(place, week_no):
-    preamble = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='
+    preamble = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id='
     link = preamble + place + '&date=' + hdl_time(week_no)
     #print(link)
     headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0'}
