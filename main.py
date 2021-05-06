@@ -49,6 +49,9 @@ def hdl_request(place, week_no):
     except requests.exceptions.ConnectionError:
         beepy.beep(sound='error')
         print('[ERROR] Connection issue')
+    except requests.exceptions.ReadTimeout:
+        beepy.beep(sound='error')
+        print('[ERROR] Connection issue')
 
     if response.status_code == 200:
     
