@@ -43,69 +43,73 @@ def hdl_request(place, week_no):
     try:
         response = requests.get(link, headers = headers, timeout = 3)
         #print(response)
+
+        if response.status_code == 200:
+        
+        #if response.raise_for_status() is not None:
+        #   beepy.beep(sound=1)
+        #print(response.raise_for_status())
+        
+            print('-------------------------------------------')
+            print('Checking for week starting: ', hdl_time(week_no))
+            print('-------------------------------------------')
+            data = response.json()
+            #print(data)
+            
+            try:
+                no_of_centers = len(data["centers"])
+                print("Total no. of centers providing vaccinations: ", no_of_centers)
+
+                ref_id = []
+                ref_id_age = []
+
+                for i in range(0,no_of_centers):
+                    
+                    sample = data["centers"][i]
+                    sessions_data = sample["sessions"]
+                    sessions_data = sessions_data[0]
+                    available = sessions_data["available_capacity"]
+                    if available > 0:
+                        ref_id.append(i)
+
+                no_vacc_centers = len(ref_id)
+                print('No. of centers with open slots: ', no_vacc_centers)
+                # data_filtered = {k: data["centers"][k] for k in ref_id}
+                # print('Details of centers: ', data_filtered)
+
+                # Check whether slots are open for 18+
+                for i in ref_id:
+                    age = data["centers"][i]["sessions"][0]["min_age_limit"]
+                    if age == 18:
+                        ref_id_age.append(i)
+                no_vacc_centers_18yo = len(ref_id_age)
+                print('No. of centers with open slots for age 18+: ', no_vacc_centers_18yo)
+                if no_vacc_centers_18yo > 0:
+                    for i in ref_id_age:
+                        pincode = data["centers"][i]["pincode"]
+                        if pincode < 400800:
+                            #audio_alert()
+                            beepy.beep(sound=6)
+                            print(data["centers"][i])
+                
+            except KeyError:
+                beepy.beep(sound='error')
+
+        else:
+            print("[ERROR] Bad response from server", response)   
+            
     except requests.exceptions.SSLError:
         beepy.beep(sound='error')
         print('[ERROR] SSL Certificate issue')
+        pass
     except requests.exceptions.ConnectionError:
         beepy.beep(sound='error')
         print('[ERROR] Connection issue')
+        pass
     except requests.exceptions.ReadTimeout:
         beepy.beep(sound='error')
-        print('[ERROR] Connection issue')
-
-    if response.status_code == 200:
-    
-    #if response.raise_for_status() is not None:
-    #   beepy.beep(sound=1)
-    #print(response.raise_for_status())
-    
-        print('-------------------------------------------')
-        print('Checking for week starting: ', hdl_time(week_no))
-        print('-------------------------------------------')
-        data = response.json()
-        #print(data)
-        
-        try:
-            no_of_centers = len(data["centers"])
-            print("Total no. of centers providing vaccinations: ", no_of_centers)
-
-            ref_id = []
-            ref_id_age = []
-
-            for i in range(0,no_of_centers):
-                
-                sample = data["centers"][i]
-                sessions_data = sample["sessions"]
-                sessions_data = sessions_data[0]
-                available = sessions_data["available_capacity"]
-                if available > 0:
-                    ref_id.append(i)
-
-            no_vacc_centers = len(ref_id)
-            print('No. of centers with open slots: ', no_vacc_centers)
-            # data_filtered = {k: data["centers"][k] for k in ref_id}
-            # print('Details of centers: ', data_filtered)
-
-            # Check whether slots are open for 18+
-            for i in ref_id:
-                age = data["centers"][i]["sessions"][0]["min_age_limit"]
-                if age == 18:
-                    ref_id_age.append(i)
-            no_vacc_centers_18yo = len(ref_id_age)
-            print('No. of centers with open slots for age 18+: ', no_vacc_centers_18yo)
-            if no_vacc_centers_18yo > 0:
-                for i in ref_id_age:
-                    pincode = data["centers"][i]["pincode"]
-                    if pincode < 400800:
-                        #audio_alert()
-                        beepy.beep(sound=6)
-                        print(data["centers"][i])
-            
-        except KeyError:
-            beepy.beep(sound='error')
-
-    else:
-        print("[ERROR] Bad response from server", response)        
+        print('[ERROR] Timeout issue')
+        pass   
 
 # Remember to keep the no. of requests to less than 100 every 5 minutes! 
 if __name__ == "__main__":
