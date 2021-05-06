@@ -1,5 +1,12 @@
-# Python script to find free slots to get a CoVID-19 vaccination in India
-# Based on the APIs available at https://apisetu.gov.in/public/marketplace/api/cowin
+# Python script to 
+#  - find free slots to get a CoVID-19 vaccination in India
+#  - create a sound alert if a slot is available
+
+# NOTE: 
+#  - THIS CODE DOES NOT AUTOMATICALLY BOOK A SLOT(I FEEL IT IS UNFAIR TO DO SO!)
+#  - It is based on the APIs available at "https://apisetu.gov.in/public/marketplace/api/cowin". It also adheres to all the rules set by GoI and other competent authorities
+
+# In case of any issues please write to
 # Author: Apurva Joshi
 # E-mail: firstname[dot]lastname[at]iitbombay[dot]org
 
@@ -39,6 +46,9 @@ def hdl_request(place, week_no):
     except requests.exceptions.SSLError:
         beepy.beep(sound='error')
         print('[ERROR] SSL Certificate issue')
+    except requests.exceptions.ConnectionError:
+        beepy.beep(sound='error')
+        print('[ERROR] Connection issue')
 
     if response.status_code == 200:
     
@@ -94,6 +104,7 @@ def hdl_request(place, week_no):
     else:
         print("[ERROR] Bad response from server", response)        
 
+# Remember to keep the no. of requests to less than 100 every 5 minutes! 
 if __name__ == "__main__":
     no_of_weeks = 3 
     while True:
