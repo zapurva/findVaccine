@@ -8,16 +8,9 @@ Find open slots in India to get vaccinated against CoVID-19
 
 Usage: 
 ```
-$ python main.py
+$ python3 main.py
 ```
-
-## [TODO]
-
-* Check following references:
-    * [Exception Handling: blog post](https://findwork.dev/blog/advanced-usage-python-requests-timeouts-retries-hooks/)
-    * [Exception handling: documentation](https://docs.python-requests.org/en/latest/user/quickstart/#errors-and-exceptions)
-
-## Setting up `beepy`
+## Setting up `beepy` and `espeak-ng`
 There are a few dependencies that didn't get installed automatically. To manually install dependencies, run:
 ```
 $ sudo apt-get install -y python3-dev libasound2-dev
@@ -26,3 +19,5 @@ Then
 ```
 $ pip3 install beepy
 ```
+For `espeak-ng` checkkout [this](https://github.com/espeak-ng/espeak-ng/blob/master/docs/guide.md) and this (https://github.com/gooofy/py-espeak-ng)
+
