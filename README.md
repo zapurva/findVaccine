@@ -19,5 +19,5 @@ Then
 ```
 $ pip3 install beepy
 ```
-For `espeak-ng` checkkout [this](https://github.com/espeak-ng/espeak-ng/blob/master/docs/guide.md) and this (https://github.com/gooofy/py-espeak-ng)
+For `espeak-ng` checkkout [this](https://github.com/espeak-ng/espeak-ng/blob/master/docs/guide.md) and [this](https://github.com/gooofy/py-espeak-ng)
 
