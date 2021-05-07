@@ -13,6 +13,7 @@
 import requests
 #import winsound
 import beepy
+from espeakng import ESpeakNG
 import json
 import datetime
 import time
@@ -28,6 +29,10 @@ MUM = '395'
 #    duration = 1000  # Set Duration To 1000 ms == 1 second
 #    winsound.Beep(frequency, duration)
 
+# Setting up espeak
+speech = ESpeakNG()
+speech.voice = 'en-us'
+
 def hdl_time(week_no):
     today = datetime.date.today()
     next_date = today + datetime.timedelta(weeks = week_no)
@@ -36,7 +41,7 @@ def hdl_time(week_no):
     return chk_date
 
 def hdl_request(place, week_no):
-    preamble = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id='
+    preamble = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='
     link = preamble + place + '&date=' + hdl_time(week_no)
     #print(link)
     headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0'}
@@ -73,7 +78,7 @@ def hdl_request(place, week_no):
                         ref_id.append(i)
 
                 no_vacc_centers = len(ref_id)
-                print('No. of centers with open slots: ', no_vacc_centers)
+                #print('No. of centers with open slots: ', no_vacc_centers)
                 # data_filtered = {k: data["centers"][k] for k in ref_id}
                 # print('Details of centers: ', data_filtered)
 
@@ -89,8 +94,20 @@ def hdl_request(place, week_no):
                         pincode = data["centers"][i]["pincode"]
                         if pincode < 400800:
                             #audio_alert()
-                            beepy.beep(sound=6)
-                            print(data["centers"][i])
+                            beepy.beep(sound=1)
+                            print("Name of center: ", data["centers"][i]["name"])
+                            print("Pincode: ", data["centers"][i]["pincode"])
+                            print("No. of slots available: ", data["centers"][i]["sessions"][0]["available_capacity"])
+                            
+                            speech.say(str(data["centers"][i]["sessions"][0]["available_capacity"]))
+                            time.sleep(1)
+                            speech.say("slots available at ")
+                            time.sleep(1.5)
+                            speech.say(str(data["centers"][i]["name"]))
+                            time.sleep(2.5)
+                            speech.say("Pin code")
+                            time.sleep(0.7)
+                            speech.say(str(data["centers"][i]["pincode"]))
                 
             except KeyError:
                 beepy.beep(sound='error')
@@ -113,7 +130,7 @@ def hdl_request(place, week_no):
 
 # Remember to keep the no. of requests to less than 100 every 5 minutes! 
 if __name__ == "__main__":
-    no_of_weeks = 3 
+    no_of_weeks = 1 
     while True:
         print('***********************************************')
         print('Checking for free slots in Thane at', datetime.datetime.now())
@@ -121,7 +138,7 @@ if __name__ == "__main__":
         for week in range(0, no_of_weeks):
             hdl_request(TNA, week)
         
-        time.sleep(15)
+        time.sleep(5)
         
         print('***********************************************')
         print('Checking for free slots in Mumbai at', datetime.datetime.now())
@@ -129,4 +146,4 @@ if __name__ == "__main__":
         for week in range(0, no_of_weeks):
             hdl_request(MUM, week)
 
-        time.sleep(15)
+        time.sleep(5)
